@@ -5,7 +5,7 @@ import FieldForm from "../../components/field-form"
 import "./index.css"
 
 
-const Container = ({ onCreate, placeholder, button, id = null }) => {
+const PostCreate = ({ onCreate, placeholder, button, id = null }) => {
 	const [status, setStatus] = useState(null)
 	const [message, setMessage] = useState("")
 
@@ -63,4 +63,4 @@ const Container = ({ onCreate, placeholder, button, id = null }) => {
 	);
 }
 
-export default Container;
+export default PostCreate;

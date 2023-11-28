@@ -5,9 +5,10 @@ import Grid from "../../components/grid"
 import Box from "../../components/box"
 import Title from "../../components/title"
 import PostCreate from "../post-create"
+import PostItem from "../post-item"
 import "./index.css"
 
-const Container = () => {
+const PostList = () => {
 	const [status, setStatus] = useState(null)
 	const [message, setMessage] = useState("")
 	const [data, setData] = useState(null)
@@ -47,6 +48,10 @@ const Container = () => {
 		isEmpty: raw.list.length === 0
 	})
 
+	if (status === null) {
+		getData()
+	}
+
 	return (
 		<Grid>
 			<Box>
@@ -59,8 +64,38 @@ const Container = () => {
 					/>
 				</Grid>
 			</Box>
+
+			{status === LOAD_STATUS.PROGRESS && (
+				<Fragment>
+					<Box>
+						<Skeleton />
+					</Box>
+					<Box>
+						<Skeleton />
+					</Box>
+				</Fragment>
+			)}
+
+			{status === LOAD_STATUS.ERROR && (
+				<Alert status={status} message={message} />
+			)}
+
+			{status === LOAD_STATUS.SUCCESS && (
+				<Fragment>
+					{data.isEmpty ? (
+						<Alert message="Список постів пустий" />
+					) : (
+						data.list.map((item) => (
+							<Fragment key={item.id}>
+								<PostItem {...item} />
+							</Fragment>
+						))
+					)}
+				</Fragment>
+			)}
+
 		</Grid>
 	);
 }
 
-export default Container;
+export default PostList;

@@ -1,6 +1,6 @@
 import "./index.css"
 
-const Component = ({ children }) => {
+const Grid = ({ children }) => {
 	return (
 		<div className='grid'>
 			{children}
@@ -8,4 +8,4 @@ const Component = ({ children }) => {
 	);
 }
 
-export default Component;
+export default Grid;

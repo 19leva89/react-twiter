@@ -1,6 +1,6 @@
 import "./index.css"
 
-const Component = ({ children }) => {
+const Title = ({ children }) => {
 	return (
 		<h1 className="title">
 			{children}
@@ -8,4 +8,4 @@ const Component = ({ children }) => {
 	);
 }
 
-export default Component;
+export default Title;

@@ -1,6 +1,6 @@
 import "./index.css"
 
-const Component = ({ children, className, style = {} }) => {
+const Box = ({ children, className, style = {} }) => {
 	return (
 		<div style={style} className={`box ${className}`}>
 			{children}
@@ -8,4 +8,4 @@ const Component = ({ children, className, style = {} }) => {
 	);
 }
 
-export default Component;
+export default Box;

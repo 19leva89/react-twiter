@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./index.css"
 
-const Component = ({ placeholder, button, onSubmit }) => {
+const FieldForm = ({ placeholder, button, onSubmit }) => {
 	const [value, setValue] = useState("")
 
 	const handleChange = (e) => setValue(e.target.value)
@@ -42,4 +42,4 @@ const Component = ({ placeholder, button, onSubmit }) => {
 	)
 }
 
-export default Component;
+export default FieldForm;
