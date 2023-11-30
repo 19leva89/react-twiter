@@ -1,4 +1,4 @@
-import "./index.css"
+import "./style.css"
 
 export const LOAD_STATUS = {
 	PROGRESS: "progress",

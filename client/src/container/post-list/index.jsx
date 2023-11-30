@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react"
+import { useState, useEffect, Fragment } from "react"
 import { Alert, Skeleton, LOAD_STATUS } from "../../components/load"
 import { getDate } from "../../util/getDate"
 import Grid from "../../components/grid"
@@ -6,7 +6,7 @@ import Box from "../../components/box"
 import Title from "../../components/title"
 import PostCreate from "../post-create"
 import PostItem from "../post-item"
-import "./index.css"
+import "./style.css"
 
 const PostList = () => {
 	const [status, setStatus] = useState(null)
@@ -48,9 +48,16 @@ const PostList = () => {
 		isEmpty: raw.list.length === 0
 	})
 
-	if (status === null) {
-		getData()
-	}
+	useEffect(() => {
+		getData();
+
+		const intervalId = setInterval(() => getData(), 30000)
+
+		return () => {
+			clearInterval(intervalId)
+		}
+	}, [])
+
 
 	return (
 		<Grid>

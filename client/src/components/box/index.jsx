@@ -1,4 +1,4 @@
-import "./index.css"
+import "./style.css"
 
 const Box = ({ children, className, style = {} }) => {
 	return (

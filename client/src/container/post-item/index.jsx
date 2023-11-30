@@ -1,11 +1,11 @@
-import { useState, Fragment } from "react"
+import { useState, useEffect, Fragment } from "react"
 import { Alert, Skeleton, LOAD_STATUS } from "../../components/load"
 import { getDate } from "../../util/getDate"
 import Box from "../../components/box"
 import Grid from "../../components/grid"
 import PostContent from "../../components/post-content"
 import PostCreate from "../post-create"
-import "./index.css"
+import "./style.css"
 
 
 const PostItem = ({ id, username, text, date }) => {
@@ -63,12 +63,14 @@ const PostItem = ({ id, username, text, date }) => {
 	const [isOpen, setOpen] = useState(false)
 
 	const handleOpen = () => {
-		if (status === null) {
-			getData()
-		}
-
 		setOpen(!isOpen)
 	}
+
+	useEffect(() => {
+		if (isOpen === true) {
+			getData()
+		}
+	}, [isOpen])
 
 	return (
 		<Box style={{ padding: "0" }}>

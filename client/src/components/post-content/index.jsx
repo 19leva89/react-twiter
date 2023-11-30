@@ -1,5 +1,5 @@
 import Grid from "../grid"
-import "./index.css"
+import "./style.css"
 
 const PostContent = ({ username, date, text }) => {
 	return (

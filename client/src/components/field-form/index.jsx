@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./index.css"
+import "./style.css"
 
 const FieldForm = ({ placeholder, button, onSubmit }) => {
 	const [value, setValue] = useState("")

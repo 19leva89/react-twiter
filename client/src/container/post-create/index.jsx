@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Alert, Loader, LOAD_STATUS } from "../../components/load"
 import Grid from "../../components/grid"
 import FieldForm from "../../components/field-form"
-import "./index.css"
+import "./style.css"
 
 
 const PostCreate = ({ onCreate, placeholder, button, id = null }) => {
