@@ -1,6 +1,8 @@
-import { useState, useEffect, Fragment } from "react"
-import { Alert, Skeleton, LOAD_STATUS } from "../../components/load"
+import { useState, useEffect, Fragment, useReducer } from "react"
+import { Alert, Skeleton } from "../../components/load"
 import { getDate } from "../../util/getDate"
+import { requestInitialState, requestReducer, REQUEST_ACTION_TYPE } from "./../../util/request"
+
 import Box from "../../components/box"
 import Grid from "../../components/grid"
 import PostContent from "../../components/post-content"
@@ -9,38 +11,39 @@ import "./style.css"
 
 
 const PostItem = ({ id, username, text, date }) => {
-	const [data, setData] = useState({
-		id,
-		username,
-		text,
-		date,
-		reply: null
-	})
-
-	const [status, setStatus] = useState(null)
-	const [message, setMessage] = useState("")
+	const [state, dispatch] = useReducer(
+		requestReducer,
+		requestInitialState,
+		(state) => ({ ...state, data: { id, username, text, date, reply: null } })
+	)
 
 	const getData = async () => {
-		setStatus(LOAD_STATUS.PROGRESS)
+		dispatch({ type: REQUEST_ACTION_TYPE.PROGRESS })
 
 		try {
-			const res = await fetch(`http://localhost:4000/post-item?id=${data.id}`, {
+			const res = await fetch(`http://localhost:4000/post-item?id=${state.data.id}`, {
 				method: "GET"
 			})
 
 			const resData = await res.json()
 
 			if (res.ok) {
-				setData(convertData(resData))
-				setStatus(LOAD_STATUS.SUCCESS)
+				dispatch({
+					type: REQUEST_ACTION_TYPE.SUCCESS,
+					payload: convertData(resData)
+				})
 			} else {
-				setMessage(resData.message)
-				setStatus(LOAD_STATUS.ERROR)
+				dispatch({
+					type: REQUEST_ACTION_TYPE.ERROR,
+					payload: resData.message
+				})
 			}
 
 		} catch (err) {
-			setMessage(err.message)
-			setStatus(LOAD_STATUS.ERROR)
+			dispatch({
+				type: REQUEST_ACTION_TYPE.ERROR,
+				payload: err.message
+			})
 		}
 	}
 
@@ -48,7 +51,7 @@ const PostItem = ({ id, username, text, date }) => {
 		id: raw.post.id,
 		username: raw.post.username,
 		text: raw.post.text,
-		date: raw.post.date,
+		date: getDate(raw.post.date),
 
 		reply: raw.post.reply.reverse().map(({ id, username, text, date }) => ({
 			id,
@@ -82,9 +85,9 @@ const PostItem = ({ id, username, text, date }) => {
 				onClick={handleOpen}
 			>
 				<PostContent
-					username={data.username}
-					date={data.date}
-					text={data.text}
+					username={state.data.username}
+					date={state.data.date}
+					text={state.data.text}
 				/>
 			</div>
 
@@ -95,12 +98,12 @@ const PostItem = ({ id, username, text, date }) => {
 							<PostCreate
 								placeholder="Post your reply!"
 								button="Reply"
-								id={data.id}
+								id={state.data.id}
 								onCreate={getData}
 							/>
 						</Box>
 
-						{status === LOAD_STATUS.PROGRESS && (
+						{state.status === REQUEST_ACTION_TYPE.PROGRESS && (
 							<Fragment>
 								<Box>
 									<Skeleton />
@@ -111,13 +114,13 @@ const PostItem = ({ id, username, text, date }) => {
 							</Fragment>
 						)}
 
-						{status === LOAD_STATUS.ERROR && (
-							<Alert status={status} message={message} />
+						{state.status === REQUEST_ACTION_TYPE.ERROR && (
+							<Alert status={state.status} message={state.message} />
 						)}
 
-						{status === LOAD_STATUS.SUCCESS &&
-							data.isEmpty === false &&
-							data.reply.map((item) => (
+						{state.status === REQUEST_ACTION_TYPE.SUCCESS &&
+							state.data.isEmpty === false &&
+							state.data.reply.map((item) => (
 								<Fragment key={item.id}>
 									<Box>
 										<PostContent {...item} />

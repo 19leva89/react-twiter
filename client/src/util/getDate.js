@@ -1,6 +1,6 @@
-export const getDate = (time) => {
+export const getDate = (timestamp) => {
 	// Створення об'єкта Date на основі Unix-часу
-	const date = new Date(time);
+	const date = new Date(timestamp);
 
 	// Отримання дати та часу в потрібному форматі
 	const day = date.getDate().toString().padStart(2, "0");

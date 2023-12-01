@@ -1,10 +1,10 @@
 import "./style.css"
 
-export const LOAD_STATUS = {
-	PROGRESS: "progress",
-	SUCCESS: "success",
-	ERROR: "error",
-}
+// export const LOAD_STATUS = {
+// 	PROGRESS: "progress",
+// 	SUCCESS: "success",
+// 	ERROR: "error",
+// }
 
 export function Alert({ message, status = "default" }) {
 	return (
