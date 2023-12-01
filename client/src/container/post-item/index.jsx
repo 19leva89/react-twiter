@@ -1,7 +1,7 @@
 import { useState, useEffect, Fragment, useReducer } from "react"
 import { Alert, Skeleton } from "../../components/load"
-import { getDate } from "../../util/getDate"
-import { requestInitialState, requestReducer, REQUEST_ACTION_TYPE } from "./../../util/request"
+import { getDate } from "../../utils/getDate"
+import { requestInitialState, requestReducer, REQUEST_ACTION_TYPE } from "../../utils/request"
 
 import Box from "../../components/box"
 import Grid from "../../components/grid"

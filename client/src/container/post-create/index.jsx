@@ -1,6 +1,6 @@
 import { useReducer } from "react"
 import { Alert, Loader } from "../../components/load"
-import { requestInitialState, requestReducer, REQUEST_ACTION_TYPE } from "./../../util/request"
+import { requestInitialState, requestReducer, REQUEST_ACTION_TYPE } from "../../utils/request"
 import Grid from "../../components/grid"
 import FieldForm from "../../components/field-form"
 import "./style.css"
