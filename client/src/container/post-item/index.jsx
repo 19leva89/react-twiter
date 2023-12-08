@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment, useReducer } from "react"
+import { useState, useEffect, Fragment, useReducer, useCallback } from "react"
 import { Alert, Skeleton } from "../../components/load"
 import { getDate } from "../../utils/getDate"
 import { requestInitialState, requestReducer, REQUEST_ACTION_TYPE } from "../../utils/request"
@@ -17,7 +17,7 @@ const PostItem = ({ id, username, text, date }) => {
 		(state) => ({ ...state, data: { id, username, text, date, reply: null } })
 	)
 
-	const getData = async () => {
+	const getData = useCallback(async () => {
 		dispatch({ type: REQUEST_ACTION_TYPE.PROGRESS })
 
 		try {
@@ -45,7 +45,7 @@ const PostItem = ({ id, username, text, date }) => {
 				payload: err.message
 			})
 		}
-	}
+	}, [state.data.id])
 
 	const convertData = (raw) => ({
 		id: raw.post.id,

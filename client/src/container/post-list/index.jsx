@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useReducer } from "react"
+import { useEffect, Fragment, useReducer, lazy, Suspense, useCallback } from "react"
 import { Alert, Skeleton } from "../../components/load"
 import { getDate } from "../../utils/getDate"
 import { requestInitialState, requestReducer, REQUEST_ACTION_TYPE } from "../../utils/request"
@@ -6,14 +6,14 @@ import Grid from "../../components/grid"
 import Box from "../../components/box"
 import Title from "../../components/title"
 import PostCreate from "../post-create"
-import PostItem from "../post-item"
 import "./style.css"
 
+const PostItem = lazy(() => import("../post-item"))
 
 const PostList = () => {
 	const [state, dispatch] = useReducer(requestReducer, requestInitialState)
 
-	const getData = async () => {
+	const getData = useCallback(async () => {
 		dispatch({
 			type: REQUEST_ACTION_TYPE.PROGRESS
 		})
@@ -43,7 +43,7 @@ const PostList = () => {
 				payload: err.message
 			})
 		}
-	}
+	}, [])
 
 	const convertData = (raw) => ({
 		list: raw.list.reverse().map(({ id, username, text, date }) => ({
@@ -102,7 +102,15 @@ const PostList = () => {
 					) : (
 						state.data.list.map((item) => (
 							<Fragment key={item.id}>
-								<PostItem {...item} />
+								<Suspense
+									fallback={
+										<Box>
+											<Skeleton />
+										</Box>
+									}
+								>
+									<PostItem {...item} />
+								</Suspense>
 							</Fragment>
 						))
 					)}

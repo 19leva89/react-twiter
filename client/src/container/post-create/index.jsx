@@ -1,4 +1,4 @@
-import { useReducer } from "react"
+import { memo, useCallback, useReducer } from "react"
 import { Alert, Loader } from "../../components/load"
 import { requestInitialState, requestReducer, REQUEST_ACTION_TYPE } from "../../utils/request"
 import Grid from "../../components/grid"
@@ -9,11 +9,15 @@ import "./style.css"
 const PostCreate = ({ onCreate, placeholder, button, id = null }) => {
 	const [state, dispatch] = useReducer(requestReducer, requestInitialState)
 
-	const handleSubmit = (value) => {
-		return sendData({ value })
-	}
+	const convertData = useCallback(({ value }) => {
+		return JSON.stringify({
+			text: value,
+			username: "user",
+			postId: id
+		})
+	}, [id])
 
-	const sendData = async (dataToSend) => {
+	const sendData = useCallback(async (dataToSend) => {
 		dispatch({
 			type: REQUEST_ACTION_TYPE.PROGRESS
 		})
@@ -48,15 +52,13 @@ const PostCreate = ({ onCreate, placeholder, button, id = null }) => {
 				payload: err.message
 			})
 		}
-	}
+	}, [convertData, onCreate])
 
-	const convertData = ({ value }) => {
-		return JSON.stringify({
-			text: value,
-			username: "user",
-			postId: id
-		})
-	}
+	const handleSubmit = useCallback((value) => {
+		return sendData({ value })
+	}, [sendData])
+
+	console.log('render')
 
 	return (
 		<Grid>
@@ -71,4 +73,7 @@ const PostCreate = ({ onCreate, placeholder, button, id = null }) => {
 	);
 }
 
-export default PostCreate;
+export default memo(PostCreate, (prev, next) => {
+	// console.log(prev, next)
+	return true
+});

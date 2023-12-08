@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { memo, useContext, useState } from "react";
+import { ThemeContext } from "../../App";
 import "./style.css"
 
 const FieldForm = ({ placeholder, button, onSubmit }) => {
@@ -22,6 +23,8 @@ const FieldForm = ({ placeholder, button, onSubmit }) => {
 
 	const isDisabled = value.length === 0
 
+	const theme = useContext(ThemeContext)
+
 	return (
 		<div className="field-form">
 			<textarea
@@ -38,8 +41,14 @@ const FieldForm = ({ placeholder, button, onSubmit }) => {
 			>
 				{button}
 			</button>
+			<button
+				onClick={theme.toggle}
+				className={`field-form__button`}
+			>
+				Change theme
+			</button>
 		</div>
 	)
 }
 
-export default FieldForm;
+export default memo(FieldForm);

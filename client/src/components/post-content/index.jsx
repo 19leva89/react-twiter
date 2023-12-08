@@ -1,3 +1,4 @@
+import { memo } from "react";
 import Grid from "../grid"
 import "./style.css"
 
@@ -15,4 +16,4 @@ const PostContent = ({ username, date, text }) => {
 	);
 }
 
-export default PostContent;
+export default memo(PostContent);
